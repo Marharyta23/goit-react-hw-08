@@ -1,46 +1,58 @@
-import ContactForm from "../ContactForm/ContactForm";
-import SearchBox from "../SearchBox/SearchBox";
-import ContactList from "../ContactList/ContactList";
-import css from "./App.module.css";
-import { fetchContacts } from "../../redux/contactsOps";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import {
-  selectError,
-  selectContacts,
-  selectLoading,
-} from "../../redux/contactsSlice";
-import { ThreeDots } from "react-loader-spinner";
+import { useDispatch, useSelector } from "react-redux";
+import { refreshUser } from "../../redux/auth/operation";
+import { selectIsRefreshing } from "../../redux/auth/selectors";
+import { Route, Routes } from "react-router-dom";
+import PrivateRoute from "../PrivateRoute";
+import Layout from "../Layout/Layout";
+import RestrictedRoute from "../RestrictedRoute";
+import HomePage from "../../pages/HomePage/HomePage";
+import RegisterPage from "../../pages/RegisterPage/RegisterPage";
+import LoginPage from "../../pages/LoginPage/LoginPage";
+import ContactsPage from "../../pages/ContactsPage/ContactsPage";
+
+// const HomePage = lazy(() => import("../../pages/HomePage/HomePage"));
+// const RegisterPage = lazy(() =>
+//   import("../../pages/RegisterPage/RegisterPage")
+// );
+// const LoginPage = lazy(() => import("../../pages/LoginPage/LoginPage"));
+// const ContactsPage = lazy(() =>
+//   import("../../pages/ContactsPage/ContactsPage")
+// );
 
 export default function App() {
   const dispatch = useDispatch();
-  const contacts = useSelector(selectContacts);
-  const loader = useSelector(selectLoading);
-  const error = useSelector(selectError);
+  const { isRefreshing } = useSelector(selectIsRefreshing);
 
   useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
+    dispatch(refreshUser());
+  });
 
-  return (
-    <div className={css.container}>
-      <h1>Phonebook</h1>
-      <ContactForm />
-      <SearchBox />
-      {loader && (
-        <ThreeDots
-          visible={true}
-          height="80"
-          width="80"
-          color="rgb(34, 34, 192)"
-          radius="9"
-          ariaLabel="three-dots-loading"
-          wrapperStyle={{}}
-          wrapperClass=""
+  return isRefreshing ? (
+    <b>Refreshing user...</b>
+  ) : (
+    <Layout>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/register"
+          element={
+            <RestrictedRoute redirectTo="/tasks" component={<RegisterPage />} />
+          }
         />
-      )}
-      {contacts.length > 0 && <ContactList />}
-      {error && <b>Unknown error. Try to reload the page.</b>}
-    </div>
+        <Route
+          path="/login"
+          element={
+            <RestrictedRoute redirectTo="/tasks" component={<LoginPage />} />
+          }
+        />
+        <Route
+          path="/contacts"
+          element={
+            <PrivateRoute redirectTo="/login" component={<ContactsPage />} />
+          }
+        />
+      </Routes>
+    </Layout>
   );
 }
