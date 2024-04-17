@@ -52,7 +52,7 @@ export default function RegistrationForm() {
         />
         <ErrorMessage name="password" component="span" className={css.error} />
         <button className={css.button} type="submit">
-          Login
+          Log In
         </button>
       </Form>
     </Formik>

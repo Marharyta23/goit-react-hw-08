@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, lazy } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { refreshUser } from "../../redux/auth/operation";
 import { selectIsRefreshing } from "../../redux/auth/selectors";
@@ -6,19 +6,16 @@ import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "../PrivateRoute";
 import Layout from "../Layout/Layout";
 import RestrictedRoute from "../RestrictedRoute";
-import HomePage from "../../pages/HomePage/HomePage";
-import RegisterPage from "../../pages/RegisterPage/RegisterPage";
-import LoginPage from "../../pages/LoginPage/LoginPage";
-import ContactsPage from "../../pages/ContactsPage/ContactsPage";
+import Loader from "../Loader";
 
-// const HomePage = lazy(() => import("../../pages/HomePage/HomePage"));
-// const RegisterPage = lazy(() =>
-//   import("../../pages/RegisterPage/RegisterPage")
-// );
-// const LoginPage = lazy(() => import("../../pages/LoginPage/LoginPage"));
-// const ContactsPage = lazy(() =>
-//   import("../../pages/ContactsPage/ContactsPage")
-// );
+const HomePage = lazy(() => import("../../pages/HomePage/HomePage"));
+const RegisterPage = lazy(() =>
+  import("../../pages/RegisterPage/RegisterPage")
+);
+const LoginPage = lazy(() => import("../../pages/LoginPage/LoginPage"));
+const ContactsPage = lazy(() =>
+  import("../../pages/ContactsPage/ContactsPage")
+);
 
 export default function App() {
   const dispatch = useDispatch();
@@ -26,10 +23,10 @@ export default function App() {
 
   useEffect(() => {
     dispatch(refreshUser());
-  });
+  }, [dispatch]);
 
   return isRefreshing ? (
-    <b>Refreshing user...</b>
+    <Loader />
   ) : (
     <Layout>
       <Routes>
@@ -37,13 +34,16 @@ export default function App() {
         <Route
           path="/register"
           element={
-            <RestrictedRoute redirectTo="/tasks" component={<RegisterPage />} />
+            <RestrictedRoute
+              redirectTo="/contacts"
+              component={<RegisterPage />}
+            />
           }
         />
         <Route
           path="/login"
           element={
-            <RestrictedRoute redirectTo="/tasks" component={<LoginPage />} />
+            <RestrictedRoute redirectTo="/contacts" component={<LoginPage />} />
           }
         />
         <Route

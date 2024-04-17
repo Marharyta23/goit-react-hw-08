@@ -10,8 +10,8 @@ import {
   selectContacts,
   selectLoading,
 } from "../../redux/contacts/slice";
-import { ThreeDots } from "react-loader-spinner";
 import DocumentTitle from "../../components/DocumentTitle";
+import Loader from "../../components/Loader";
 
 export default function ContactsPage() {
   const dispatch = useDispatch();
@@ -29,18 +29,7 @@ export default function ContactsPage() {
       <h1>Phonebook</h1>
       <ContactForm />
       <SearchBox />
-      {loader && (
-        <ThreeDots
-          visible={true}
-          height="80"
-          width="80"
-          color="rgb(34, 34, 192)"
-          radius="9"
-          ariaLabel="three-dots-loading"
-          wrapperStyle={{}}
-          wrapperClass=""
-        />
-      )}
+      {loader && <Loader />}
       {contacts.length > 0 && <ContactList />}
       {error && <b>Unknown error. Try to reload the page.</b>}
     </div>
