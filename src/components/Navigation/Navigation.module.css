@@ -2,10 +2,11 @@
   display: inline-block;
   text-decoration: none;
   padding: 12px;
-  font-weight: 700;
+  font-weight: 400;
   color: #2a363b;
 }
 
-.link.active {
-  color: rgb(34, 34, 192);
+.active {
+  color: #2a363b;
+  text-decoration: underline;
 }

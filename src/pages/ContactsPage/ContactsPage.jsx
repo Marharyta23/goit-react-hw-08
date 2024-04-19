@@ -10,8 +10,8 @@ import {
   selectContacts,
   selectLoading,
 } from "../../redux/contacts/slice";
-import DocumentTitle from "../../components/DocumentTitle";
-import Loader from "../../components/Loader";
+import DocumentTitle from "../../components/DocumentTitle/DocumentTitle";
+import Loader from "../../components/Loader/Loader";
 
 export default function ContactsPage() {
   const dispatch = useDispatch();
@@ -26,7 +26,6 @@ export default function ContactsPage() {
   return (
     <div className={css.container}>
       <DocumentTitle>Your Contacts</DocumentTitle>
-      <h1>Phonebook</h1>
       <ContactForm />
       <SearchBox />
       {loader && <Loader />}
