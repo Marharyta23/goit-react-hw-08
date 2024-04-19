@@ -9,7 +9,7 @@ import {
   selectError,
   selectContacts,
   selectLoading,
-} from "../../redux/contacts/slice";
+} from "../../redux/contacts/selectors";
 import DocumentTitle from "../../components/DocumentTitle/DocumentTitle";
 import Loader from "../../components/Loader/Loader";
 
