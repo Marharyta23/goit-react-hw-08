@@ -16,7 +16,7 @@ const FeedbackSchema = Yup.object().shape({
     .required("Required"),
 });
 
-export default function RegistrationForm() {
+export default function LoginForm() {
   const emailId = useId();
   const passwordId = useId();
   const dispatch = useDispatch();
